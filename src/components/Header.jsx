@@ -52,12 +52,13 @@ export default function Header() {
                             Offers
                         </li>
                         <li
-                            className={`cursor-pointer py-3 text-sm font-semibold text-gray-400 ${(pathMatchRoute("/sign-in") || pathMatchRoute("/profile")) &&
-                                "text-black border-b-red-500"
+                            className={`cursor-pointer py-3 text-sm font-semibold  ${(pathMatchRoute("/sign-in") || pathMatchRoute("/profile")) &&
+                                "text-black border-b-red-500  border-b-[3px]"
                                 }`}
-                            onClick={() => navigate("/profile")}
+                            onClick={() => navigate("/sign-in")}
                         >
                             {/* {pageState} */}
+                            Sign in
                         </li>
                     </ul>
                 </div>
