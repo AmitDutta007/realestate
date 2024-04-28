@@ -1,6 +1,6 @@
 
 import { useState } from "react";
-// import { AiFillEyeInvisible, AiFillEye } from "react-icons/ai";
+import { AiFillEyeInvisible, AiFillEye } from "react-icons/ai";
 import { Link } from "react-router-dom";
 // import OAuth from "../components/OAuth";
 
@@ -47,17 +47,17 @@ const SignIn = () => {
               placeholder="Password"
               className="w-full px-4 py-2 text-xl text-gray-700 bg-white border-gray-300 rounded transition ease-in-out"
             />
-            {/* {showPassword ? (
+            {showPassword ? (
               <AiFillEyeInvisible
                 className="absolute right-3 top-3 text-xl cursor-pointer"
-                onClick={() => setShowPassword((prevState) => !prevState)}
+                onClick={() => setShowPassword(false)}
               />
             ) : (
               <AiFillEye
                 className="absolute right-3 top-3 text-xl cursor-pointer"
-                onClick={() => setShowPassword((prevState) => !prevState)}
+                onClick={() => setShowPassword(true)}
               />
-            )} */}
+            )}
           </div>
           <div className="flex justify-between whitespace-nowrap text-sm sm:text-lg">
             <p className="mb-6">
