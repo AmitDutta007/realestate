@@ -1,7 +1,10 @@
 import { useState } from "react";
 import { AiFillEyeInvisible, AiFillEye } from "react-icons/ai";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import OAuth from "../components/OAuth";
+import { getAuth, createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { db } from '../firebase'
+import { doc, serverTimestamp, setDoc } from "firebase/firestore";
 
 const SignUp = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -17,6 +20,33 @@ const SignUp = () => {
       [e.target.id]: e.target.value,
     }));
   }
+
+  const navigate = useNavigate();
+
+
+  const onsubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const auth = getAuth();
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password)
+      updateProfile(auth.currentUser, {
+        displayName: name
+      })
+      const user = userCredential.user
+      // store user in database
+      const formDataCopy = { ...formData };
+      delete formDataCopy.password;
+      formDataCopy.timestamp = serverTimestamp()
+
+      await setDoc(doc(db, "users", user.uid), formDataCopy);
+
+      navigate("/")
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   return (
     <section>
       <h1 className="text-3xl text-center mt-6 font-bold">Sign Up</h1>
@@ -29,7 +59,7 @@ const SignUp = () => {
           />
         </div>
         <div className="w-full md:w-[67%] lg:w-[40%] lg:ml-20">
-          <form>
+          <form onSubmit={onsubmit}>
             <input
               type="text"
               id="name"
