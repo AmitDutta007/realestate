@@ -1,23 +1,26 @@
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 // import { getAuth, onAuthStateChanged } from "firebase/auth";
 
-export default function Header() {
-    //   const [pageState, setPageState] = useState("Sign in");
+ function Header() {
+
+      const [pageState, setPageState] = useState("Sign in");
     const location = useLocation();
     const navigate = useNavigate();
 
     console.log(location)
 
-    //   const auth = getAuth();
-    //   useEffect(() => {
-    //     onAuthStateChanged(auth, (user) => {
-    //       if (user) {
-    //         setPageState("Profile");
-    //       } else {
-    //         setPageState("Sign in");
-    //       }
-    //     });
-    //   }, [auth]);
+      const auth = getAuth();
+      useEffect(() => {
+        onAuthStateChanged(auth, (user) => {
+          if (user) {
+            setPageState("Profile");
+          } else {
+            setPageState("Sign in");
+          }
+        });
+      }, [auth]);
 
     function pathMatchRoute(route) {
         if (route === location.pathname) {
@@ -55,10 +58,9 @@ export default function Header() {
                             className={`cursor-pointer py-3 text-sm font-semibold  ${(pathMatchRoute("/sign-in") || pathMatchRoute("/profile")) &&
                                 "text-black border-b-red-500  border-b-[3px]"
                                 }`}
-                            onClick={() => navigate("/sign-in")}
+                            onClick={() => navigate("/profile")}
                         >
-                            {/* {pageState} */}
-                            Sign in
+                            {pageState}
                         </li>
                     </ul>
                 </div>
@@ -66,3 +68,5 @@ export default function Header() {
         </div>
     );
 }
+
+export default Header;

@@ -3,7 +3,7 @@ import { doc, updateDoc } from "firebase/firestore";
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import { toast } from "react-toastify";
-import db from '../firebase'
+import { db } from '../firebase'
 
 const Profile = () => {
 
@@ -32,7 +32,7 @@ const Profile = () => {
     }));
   }
 
-  async function onSubmit(){
+  async function onSubmit() {
     try {
       if (auth.currentUser.displayName !== name) {
         //update display name in firebase auth
