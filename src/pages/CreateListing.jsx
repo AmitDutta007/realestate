@@ -42,6 +42,13 @@ const CreateListing = () => {
         images: e.target.files,
       }));
     }
+    // Text/Boolean/Number
+    if (!e.target.files) {
+      setFormData((prevState) => ({
+        ...prevState,
+        [e.target.id]: boolean ?? e.target.value,
+      }));
+    }
   }
   return (
     <main className="max-w-md px-2 mx-auto">
@@ -65,7 +72,7 @@ const CreateListing = () => {
           <button
             type="button"
             id="type"
-            value="sale"
+            value="rent"
             onClick={onChange}
             className={`ml-3 px-7 py-3 font-medium text-sm uppercase shadow-md rounded hover:shadow-lg focus:shadow-lg active:shadow-lg transition duration-150 ease-in-out w-full ${
               type === "sale"
