@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Spinner from '../components/Spinner'
+import { toast } from "react-toastify";
 const CreateListing = () => {
 
   const[loading, setLoading]= useState(false)
@@ -57,6 +58,11 @@ const CreateListing = () => {
   const onSubmit = (e) => {
     e.preventDefault();
     setLoading(true)
+    if(discountedPrice >= regularPrice ){
+      setLoading(false);
+      toast.error("Discounted price need to less than regular price")
+    }
+    return
   }
 
   if(loading){
