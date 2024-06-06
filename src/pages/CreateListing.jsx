@@ -1,9 +1,10 @@
 import { useState } from "react";
 import Spinner from '../components/Spinner'
 import { toast } from "react-toastify";
+import { getStorage } from "firebase/storage";
 const CreateListing = () => {
 
-  const[loading, setLoading]= useState(false)
+  const [loading, setLoading] = useState(false)
 
   const [formData, setFormData] = useState({
     type: "rent",
@@ -17,6 +18,7 @@ const CreateListing = () => {
     offer: false,
     regularPrice: 0,
     discountedPrice: 0,
+    images: {}
   });
   const {
     type,
@@ -30,6 +32,7 @@ const CreateListing = () => {
     offer,
     regularPrice,
     discountedPrice,
+    images
   } = formData;
   function onChange(e) {
     let boolean = null;
@@ -55,18 +58,40 @@ const CreateListing = () => {
     }
   }
 
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
     setLoading(true)
-    if(discountedPrice >= regularPrice ){
+    if (discountedPrice >= regularPrice) {
       setLoading(false);
       toast.error("Discounted price need to less than regular price")
+      return
     }
-    return
+    if (images.length > 6) {
+      setLoading(false);
+      toast.error("maximum 6 images are allowed");
+      return;
+    }
+
+    async function storeImage(image) {
+      // return new Promise((resolve, reject) => {
+      //   const storage = getStorage();
+      // }
+    }
+
+
+    const imgUrls = await Promise.all(
+      [...images].map((image) => storeImage(image))
+    ).catch((error) => {
+      setLoading(false);
+      toast.error("Images not uploaded");
+      return;
+    });
   }
 
-  if(loading){
-    return <Spinner/>
+
+
+  if (loading) {
+    return <Spinner />
   }
 
   return (
@@ -81,8 +106,8 @@ const CreateListing = () => {
             value="sale"
             onClick={onChange}
             className={`mr-3 px-7 py-3 font-medium text-sm uppercase shadow-md rounded hover:shadow-lg focus:shadow-lg active:shadow-lg transition duration-150 ease-in-out w-full ${type === "rent"
-                ? "bg-white text-black"
-                : "bg-slate-600 text-white"
+              ? "bg-white text-black"
+              : "bg-slate-600 text-white"
               }`}
           >
             sell
@@ -93,8 +118,8 @@ const CreateListing = () => {
             value="rent"
             onClick={onChange}
             className={`ml-3 px-7 py-3 font-medium text-sm uppercase shadow-md rounded hover:shadow-lg focus:shadow-lg active:shadow-lg transition duration-150 ease-in-out w-full ${type === "sale"
-                ? "bg-white text-black"
-                : "bg-slate-600 text-white"
+              ? "bg-white text-black"
+              : "bg-slate-600 text-white"
               }`}
           >
             rent
